@@ -1,17 +1,19 @@
+import { castDraft } from "@reduxjs/toolkit/node_modules/immer";
 import { useLocation } from "react-router";
 import styled from "styled-components";
-import { useGetDetailsQuery } from "../services/tmdbApi";
+import { useGetDetailsQuery, useGetCastQuery } from "../services/tmdbApi";
 
 const MovieDetails = () => {
   const id = useLocation().pathname;
   const { data, isFetching } = useGetDetailsQuery(id);
+  const { data: castData, isFetching: castIsFetching } = useGetCastQuery(id);
   const genres = [];
-  console.log(data);
-  if (isFetching) return "Loading...";
+  //console.log(data);
+  if (isFetching || castIsFetching) return "Loading...";
   for (let i in data.genres) {
     genres.push(data.genres[i].name);
   }
-
+  console.log(castData);
   return (
     <>
       <Poster
@@ -49,6 +51,31 @@ const MovieDetails = () => {
               </div>
             </LanguageInfo>
           </div>
+          <CastInfo>
+            <div className="cast-header">
+              <h3>Cast</h3>
+            </div>
+            <div className="actors">
+              {castData?.cast?.map((actor) => {
+                if (actor.known_for_department === "Acting") {
+                  return (
+                    <div className="actor-card">
+                      <div className="profile-container">
+                        <img
+                          src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                          alt=""
+                        />
+                      </div>
+                      <div className="actor-info">
+                        <p>{actor.character}</p>
+                        <h4>{actor.name}</h4>
+                      </div>
+                    </div>
+                  );
+                }
+              })}
+            </div>
+          </CastInfo>
         </div>
         <div className="synopsis">
           <h4>Sinossi</h4>
@@ -89,6 +116,7 @@ const DetailCard = styled.div`
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
     h3 {
       margin-left: 0.5rem;
       font-size: 2rem;
@@ -111,6 +139,9 @@ const DetailCard = styled.div`
       width: 100%;
       object-fit: cover;
     }
+    @media (max-width: 700px) {
+      display: none;
+    }
   }
   .detail-info {
     margin-left: 2rem;
@@ -125,9 +156,6 @@ const DetailCard = styled.div`
   @media (max-width: 800px) {
     width: 90%;
     left: 5%;
-    .poster-container {
-      width: 100%;
-    }
     .detail-info {
       margin-left: 0;
       margin-top: 1rem;
@@ -155,6 +183,36 @@ const LanguageInfo = styled.div`
         opacity: 0.7;
         font-weight: 600;
       }
+    }
+  }
+`;
+
+const CastInfo = styled.div`
+  max-height: 80vh;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  .actor-card {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0rem 1.5rem auto;
+    .profile-container {
+      max-width: 4.8rem;
+      max-height: 4.8rem;
+      overflow: hidden;
+      border-radius: 50%;
+      img {
+        width: 100%;
+      }
+    }
+  }
+  .actor-info {
+    margin-left: 1rem;
+    p {
+      margin-left: 0;
+      font-weight: 600;
+      font-size: 0.8rem;
     }
   }
 `;

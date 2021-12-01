@@ -66,7 +66,6 @@ const Results = styled.div`
   align-items: center;
   justify-content: flex-start;
   overflow-x: scroll;
-  scrollbar-width: none;
   ::-webkit-scrollbar {
     display: none;
   }

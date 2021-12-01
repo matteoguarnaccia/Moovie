@@ -22,6 +22,10 @@ export const tmdbApi = createApi({
       query: (string) =>
         `/search/multi?api_key=${api_key}&language=it-IT&query=${string}&page=1&include_adult=false`,
     }),
+    getCast: builder.query({
+      query: (type_id) =>
+        `${type_id}/credits?api_key=${api_key}&language=it-IT`,
+    }),
   }),
 });
 
@@ -30,4 +34,5 @@ export const {
   useGetTopRatedMoviesQuery,
   useGetDetailsQuery,
   useGetSearchQuery,
+  useGetCastQuery,
 } = tmdbApi;
