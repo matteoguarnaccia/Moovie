@@ -20,7 +20,7 @@ const Navbar = () => {
       <Link to="/">
         <div className="logo-container">
           <img src={logo} alt="Moovie logo" />
-          <h1>Moovie</h1>
+          <h1>Mooovie</h1>
         </div>
       </Link>
       <span>|</span>
@@ -46,18 +46,16 @@ const Navbar = () => {
 };
 
 const StyledNavbar = styled.div`
-  overflow-x: scroll;
   z-index: 10;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   padding: 1rem;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   white-space: nowrap;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0), #0a0818 50%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0), #0a0818 40%);
   .logo-container {
     display: flex;
     align-items: center;
@@ -74,6 +72,7 @@ const StyledNavbar = styled.div`
       -webkit-text-fill-color: transparent;
     }
   }
+
   span {
     padding: 0rem 1rem;
     font-size: 3rem;
@@ -111,6 +110,31 @@ const StyledNavbar = styled.div`
         outline: none;
         border: 2px solid #d660fe;
       }
+    }
+  }
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0), #0a0818 12%);
+    .logo-container {
+      margin-bottom: 1rem;
+      img {
+        width: 2rem;
+        height: 2rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+    }
+    span {
+      display: none;
+    }
+    nav {
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    form {
+      width: 80%;
+      margin: auto;
     }
   }
 `;

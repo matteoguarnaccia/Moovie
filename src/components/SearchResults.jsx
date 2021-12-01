@@ -27,12 +27,16 @@ const SearchResults = () => {
 };
 
 const Results = styled.div`
-  margin-top: 10%;
   padding: 0rem 1rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 200px);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-column-gap: 1rem;
   grid-row-gap: 1rem;
+  @media (max-width: 450px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export default SearchResults;

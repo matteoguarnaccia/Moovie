@@ -38,6 +38,16 @@ const MovieDetails = () => {
                 ? `${Math.floor(data.runtime / 60)}h${data.runtime % 60}m`
                 : ""}
             </p>
+            <LanguageInfo>
+              <h3 className="language-header">Lingue disponibili:</h3>
+              <div className="languages">
+                {data?.spoken_languages?.map((language) => (
+                  <div className="language">
+                    <p>{language.english_name}</p>
+                  </div>
+                ))}
+              </div>
+            </LanguageInfo>
           </div>
         </div>
         <div className="synopsis">
@@ -50,12 +60,16 @@ const MovieDetails = () => {
 };
 
 const Poster = styled.img`
+  margin-top: -10%;
   position: fixed;
   width: 100%;
   height: 100vh;
   object-fit: cover;
   object-position: top;
   z-index: 1;
+  @media (max-width: 1000px) {
+    margin-top: -30%;
+  }
 `;
 
 const DetailCard = styled.div`
@@ -117,6 +131,30 @@ const DetailCard = styled.div`
     .detail-info {
       margin-left: 0;
       margin-top: 1rem;
+    }
+  }
+`;
+
+const LanguageInfo = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  h3.language-header {
+    font-size: 1rem;
+    font-weight: 600;
+    opacity: 0.5;
+  }
+  .languages {
+    display: flex;
+    .language {
+      background: #1e1e20;
+      border-radius: 10px;
+      margin: 1rem 0.5rem;
+      p {
+        margin: 0.5rem;
+        opacity: 0.7;
+        font-weight: 600;
+      }
     }
   }
 `;

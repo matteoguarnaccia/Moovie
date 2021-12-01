@@ -9,17 +9,18 @@ export const tmdbApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getPopular: builder.query({
-      query: () => `/trending/all/week?api_key=${api_key}`,
+      query: () => `/trending/all/week?api_key=${api_key}&language=it-IT`,
     }),
     getTopRatedMovies: builder.query({
-      query: () => `/movie/top_rated?api_key=${api_key}&language=it-IT&page=1`,
+      query: () =>
+        `/movie/top_rated?api_key=${api_key}&language=it-IT&region=IT&page=1`,
     }),
     getDetails: builder.query({
       query: (type_id) => `${type_id}?api_key=${api_key}&language=it-IT`,
     }),
     getSearch: builder.query({
       query: (string) =>
-        `/search/multi?api_key=${api_key}&language=it-IT&query=${string}&page=1&include_adult=true`,
+        `/search/multi?api_key=${api_key}&language=it-IT&query=${string}&page=1&include_adult=false`,
     }),
   }),
 });

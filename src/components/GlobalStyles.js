@@ -9,10 +9,14 @@ const GlobalStyles = createGlobalStyle`
 body {
     background: #0A0818;
     color: white;
+    margin-top: 10%;
     font-family: 'Raleway', sans-serif;
     ::-webkit-scrollbar {
     display: none;
   }
+  @media (max-width: 1000px){
+        margin-top:180px;
+    }
 }
 h2 {
     margin-left: 1rem;

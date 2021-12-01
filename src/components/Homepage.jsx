@@ -56,9 +56,7 @@ const Homepage = () => {
   );
 };
 
-const MovieList = styled.div`
-  margin-top: 10%;
-`;
+const MovieList = styled.div``;
 
 const Results = styled.div`
   position: relative;

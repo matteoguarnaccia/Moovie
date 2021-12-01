@@ -21,7 +21,7 @@ const MovieCard = ({ title, poster, release, rating, id, type }) => {
 const StyledMovieCard = styled.div`
   cursor: pointer;
   margin-right: 1rem;
-  max-width: 400px;
+  max-width: 200px;
   .poster-container {
     border-radius: 15px;
     overflow: hidden;
