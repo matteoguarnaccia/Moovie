@@ -21,6 +21,9 @@ body {
 h2 {
     margin-left: 1rem;
 }
+h3 {
+    font-size: 1.6rem;
+}
 a{
     text-decoration: none;
     color: white;

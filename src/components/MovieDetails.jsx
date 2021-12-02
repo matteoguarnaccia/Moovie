@@ -1,81 +1,105 @@
-import { castDraft } from "@reduxjs/toolkit/node_modules/immer";
 import { useLocation } from "react-router";
 import styled from "styled-components";
 import { useGetDetailsQuery, useGetCastQuery } from "../services/tmdbApi";
+import { useGetAvailabilityQuery } from "../services/streamingApi";
+import { generateStreamingIcon } from "../util";
 
 const MovieDetails = () => {
   const id = useLocation().pathname;
   const { data, isFetching } = useGetDetailsQuery(id);
   const { data: castData, isFetching: castIsFetching } = useGetCastQuery(id);
+  const { data: streamingData, isFetching: streamingIsFetching } =
+    useGetAvailabilityQuery(id.substring(1));
   const genres = [];
+
   //console.log(data);
-  if (isFetching || castIsFetching) return "Loading...";
+  if (isFetching || castIsFetching || streamingIsFetching) return "Loading...";
   for (let i in data.genres) {
     genres.push(data.genres[i].name);
   }
-  console.log(castData);
+  console.log(streamingData.streamingInfo);
   return (
     <>
       <Poster
         src={`https://image.tmdb.org/t/p/original/${data.backdrop_path}`}
       />
       <DetailCard>
+        {Object.keys(streamingData.streamingInfo).length !== 0 && (
+          <Streaming>
+            <div className="streaming-header">
+              <h3>Servizi di Streaming</h3>
+            </div>
+            <div className="streaming-icons">
+              {Object.entries(streamingData?.streamingInfo)?.map(
+                ([name, info]) => generateStreamingIcon(name, info)
+              )}
+            </div>
+          </Streaming>
+        )}
         <div className="main-info">
-          <div className="poster-container">
-            <img
-              src={`https://image.tmdb.org/t/p/w400/${data.poster_path}`}
-              alt={data.title}
-            />
-          </div>
-          <div className="detail-info">
-            <h3>{data.title || data.name}</h3>
-            <p>
-              {data.release_date?.split("-")[0] ||
-                data.first_air_date?.split("-")[0]}
-            </p>
-            <span>|</span>
-            <p>{genres.join("/")}</p> <span>|</span>
-            <p>
-              {data.runtime
-                ? `${Math.floor(data.runtime / 60)}h${data.runtime % 60}m`
-                : ""}
-            </p>
-            <LanguageInfo>
-              <h3 className="language-header">Lingue disponibili:</h3>
-              <div className="languages">
-                {data?.spoken_languages?.map((language) => (
-                  <div className="language">
-                    <p>{language.english_name}</p>
-                  </div>
-                ))}
+          <Left>
+            <MovieMain>
+              <div className="poster-container">
+                <img
+                  src={`https://image.tmdb.org/t/p/w400/${data.poster_path}`}
+                  alt={data.title}
+                />
               </div>
-            </LanguageInfo>
-          </div>
-          <CastInfo>
-            <div className="cast-header">
-              <h3>Cast</h3>
-            </div>
-            <div className="actors">
-              {castData?.cast?.map((actor) => {
-                if (actor.known_for_department === "Acting") {
-                  return (
-                    <div className="actor-card">
-                      <div className="profile-container">
-                        <img
-                          src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                          alt=""
-                        />
+              <div className="detail-info">
+                <h3>{data.title || data.name}</h3>
+                <p>
+                  {data.release_date?.split("-")[0] ||
+                    data.first_air_date?.split("-")[0]}
+                </p>
+                <span>|</span>
+                <p className="genres">{genres.join("/")}</p> <span>|</span>
+                <p>
+                  {data.runtime
+                    ? `${Math.floor(data.runtime / 60)}h${data.runtime % 60}m`
+                    : ""}
+                </p>
+                <LanguageInfo>
+                  <h3 className="language-header">Lingue disponibili:</h3>
+                  <div className="languages">
+                    {data?.spoken_languages?.map((language) => (
+                      <div className="language" key={language.english_name}>
+                        <p>{language.english_name}</p>
                       </div>
-                      <div className="actor-info">
-                        <p>{actor.character}</p>
-                        <h4>{actor.name}</h4>
+                    ))}
+                  </div>
+                </LanguageInfo>
+              </div>
+            </MovieMain>
+          </Left>
+          <Right>
+            <CastInfo>
+              <div className="cast-header">
+                <h3>Cast</h3>
+              </div>
+              <div className="actors">
+                {castData?.cast?.map((actor) => {
+                  if (actor.known_for_department === "Acting") {
+                    return (
+                      <div className="actor-card" key={actor.id}>
+                        <div className="profile-container">
+                          <img
+                            src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                            alt=""
+                          />
+                        </div>
+                        <div className="actor-info">
+                          <p>{actor.character}</p>
+                          <h4>{actor.name}</h4>
+                        </div>
                       </div>
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          </CastInfo>
+                    );
+                  } else {
+                    return "";
+                  }
+                })}
+              </div>
+            </CastInfo>
+          </Right>
         </div>
         <div className="synopsis">
           <h4>Sinossi</h4>
@@ -106,7 +130,12 @@ const DetailCard = styled.div`
   left: 10%;
   width: 80%;
   z-index: 2;
-  background: #0a0818;
+  background: linear-gradient(
+    to right bottom,
+    rgba(10, 8, 24, 0.7),
+    rgba(10, 8, 24, 0.3)
+  );
+  backdrop-filter: blur(2rem);
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   ::-webkit-scrollbar {
@@ -114,12 +143,9 @@ const DetailCard = styled.div`
   }
   .main-info {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
+    gap: 1rem;
     h3 {
       margin-left: 0.5rem;
-      font-size: 2rem;
     }
     p {
       display: inline-block;
@@ -129,9 +155,15 @@ const DetailCard = styled.div`
     span {
       opacity: 0.5;
     }
+    @media (max-width: 1200px) {
+      flex-wrap: wrap;
+    }
+    @media (max-width: 720px) {
+      justify-content: center;
+    }
   }
   .poster-container {
-    width: 30%;
+    max-width: 40%;
     min-width: 100px;
     overflow: hidden;
     border-radius: 15px;
@@ -139,12 +171,13 @@ const DetailCard = styled.div`
       width: 100%;
       object-fit: cover;
     }
-    @media (max-width: 700px) {
-      display: none;
-    }
   }
   .detail-info {
     margin-left: 2rem;
+    min-width: 33%;
+    h3 {
+      font-size: 2rem;
+    }
   }
   .synopsis {
     margin-top: 2rem;
@@ -153,14 +186,60 @@ const DetailCard = styled.div`
       opacity: 0.5;
     }
   }
-  @media (max-width: 800px) {
-    width: 90%;
-    left: 5%;
+  @media (max-width: 720px) {
+    width: 96%;
+    left: 2%;
     .detail-info {
-      margin-left: 0;
+      margin-left: 1rem;
       margin-top: 1rem;
     }
   }
+`;
+const Streaming = styled.div`
+  width: 100%;
+  .streaming-icons {
+    display: flex;
+    margin: 1rem 0rem;
+    .streaming-icon {
+      width: 4.8rem;
+      height: 4.8rem;
+      margin: 0rem 0.5rem;
+      overflow: hidden;
+      border-radius: 50%;
+      img {
+        width: 100%;
+      }
+    }
+    p {
+      opacity: 0.5;
+      width: 100%;
+      text-align: center;
+      font-weight: 600;
+      margin: 0.5rem 0rem 0rem 0rem;
+    }
+  }
+  @media (max-width: 720px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const Left = styled.div`
+  min-width: 60%;
+  overflow-x: hidden;
+`;
+const MovieMain = styled.div`
+  display: flex;
+  @media (max-width: 720px) {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+`;
+const Right = styled.div`
+  max-height: 80vh;
+  max-wi
 `;
 
 const LanguageInfo = styled.div`
@@ -174,10 +253,12 @@ const LanguageInfo = styled.div`
   }
   .languages {
     display: flex;
+    flex-wrap: wrap;
+    margin: 1rem 0rem;
     .language {
       background: #1e1e20;
       border-radius: 10px;
-      margin: 1rem 0.5rem;
+      margin: 0.25rem 0.25rem;
       p {
         margin: 0.5rem;
         opacity: 0.7;
@@ -188,7 +269,9 @@ const LanguageInfo = styled.div`
 `;
 
 const CastInfo = styled.div`
-  max-height: 80vh;
+  height: 100%;
+  max-width: 100%;
+  min-width: 33%;
   overflow-y: scroll;
   ::-webkit-scrollbar {
     display: none;

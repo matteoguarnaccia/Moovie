@@ -32,6 +32,7 @@ const Homepage = () => {
                 rating={item.vote_average}
                 id={item.id}
                 type={item.title ? "movie" : "tv"}
+                key={item.id}
               />
             ))}
           </Results>
@@ -47,6 +48,7 @@ const Homepage = () => {
                 rating={item.vote_average}
                 id={item.id}
                 type={item.title ? "movie" : "tv"}
+                key={item.id}
               />
             ))}
           </Results>
@@ -63,9 +65,10 @@ const Results = styled.div`
   margin: 2rem 0rem;
   padding-left: 1rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   overflow-x: scroll;
+  overflow-y: visible;
   ::-webkit-scrollbar {
     display: none;
   }

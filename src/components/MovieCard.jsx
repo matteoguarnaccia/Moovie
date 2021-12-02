@@ -11,7 +11,7 @@ const MovieCard = ({ title, poster, release, rating, id, type }) => {
         </div>
         <div className="movie-info">
           <h3>{title}</h3>
-          <p>{release}</p>
+          <p>{release.split("-")[0]}</p>
         </div>
       </Link>
     </StyledMovieCard>
@@ -21,18 +21,29 @@ const MovieCard = ({ title, poster, release, rating, id, type }) => {
 const StyledMovieCard = styled.div`
   cursor: pointer;
   margin-right: 1rem;
-  max-width: 200px;
+  min-width: 200px;
   .poster-container {
+    width: 100%;
     border-radius: 15px;
     overflow: hidden;
+    img {
+      width: 100%;
+    }
   }
   .movie-info {
     margin-top: 1rem;
+    width: 100%;
     h3 {
       font-size: 1rem;
       margin-bottom: 0.2rem;
     }
-    width: 100%;
+    p {
+      opacity: 0.5;
+      font-weight: 600;
+    }
+  }
+  @media (max-width: 1200px) {
+    min-width: 150px;
   }
 `;
 
