@@ -3,13 +3,18 @@ import styled from "styled-components";
 import { useGetDetailsQuery, useGetCastQuery } from "../services/tmdbApi";
 import { useGetAvailabilityQuery } from "../services/streamingApi";
 import { generateStreamingIcon } from "../util";
+import avatar from "../images/avatar_default.png";
 
 const MovieDetails = () => {
   const id = useLocation().pathname;
   const { data, isFetching } = useGetDetailsQuery(id);
   const { data: castData, isFetching: castIsFetching } = useGetCastQuery(id);
-  const { data: streamingData, isFetching: streamingIsFetching } =
-    useGetAvailabilityQuery(id.substring(1));
+  const {
+    data: streamingData,
+    isFetching: streamingIsFetching,
+    isError,
+  } = useGetAvailabilityQuery(id.substring(1));
+  // useGetAvailabilityQuery(id.substring(1)) || "ciao";
   const genres = [];
 
   //console.log(data);
@@ -17,14 +22,13 @@ const MovieDetails = () => {
   for (let i in data.genres) {
     genres.push(data.genres[i].name);
   }
-  console.log(streamingData.streamingInfo);
   return (
     <>
       <Poster
         src={`https://image.tmdb.org/t/p/original/${data.backdrop_path}`}
       />
       <DetailCard>
-        {Object.keys(streamingData.streamingInfo).length !== 0 && (
+        {!isError && Object.keys(streamingData?.streamingInfo).length !== 0 && (
           <Streaming>
             <div className="streaming-header">
               <h3>Servizi di Streaming</h3>
@@ -83,7 +87,11 @@ const MovieDetails = () => {
                       <div className="actor-card" key={actor.id}>
                         <div className="profile-container">
                           <img
-                            src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                            src={
+                              actor?.profile_path
+                                ? `https://image.tmdb.org/t/p/w200${actor?.profile_path}`
+                                : avatar
+                            }
                             alt=""
                           />
                         </div>

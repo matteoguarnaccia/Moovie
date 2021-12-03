@@ -11,7 +11,7 @@ const MovieCard = ({ title, poster, release, rating, id, type }) => {
         </div>
         <div className="movie-info">
           <h3>{title}</h3>
-          <p>{release.split("-")[0]}</p>
+          <p>{release?.split("-")[0]}</p>
         </div>
       </Link>
     </StyledMovieCard>
@@ -22,6 +22,7 @@ const StyledMovieCard = styled.div`
   cursor: pointer;
   margin-right: 1rem;
   min-width: 200px;
+  max-width: 200px;
   .poster-container {
     width: 100%;
     border-radius: 15px;
@@ -44,6 +45,7 @@ const StyledMovieCard = styled.div`
   }
   @media (max-width: 1200px) {
     min-width: 150px;
+    max-width: 200px;
   }
 `;
 

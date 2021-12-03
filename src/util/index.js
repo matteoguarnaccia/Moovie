@@ -8,8 +8,8 @@ export const generateStreamingIcon = (name, info) => {
   switch (name) {
     case "netflix":
       return (
-        <a href={info?.it?.link} target="_blank" rel="noreferrer">
-          <div className="streaming-icon" key={name}>
+        <a href={info?.it?.link} target="_blank" rel="noreferrer" key={name}>
+          <div className="streaming-icon">
             <img src={netflix} alt={name} />
           </div>
           <p>Netflix</p>
@@ -17,8 +17,8 @@ export const generateStreamingIcon = (name, info) => {
       );
     case "prime":
       return (
-        <a href={info?.it?.link} target="_blank" rel="noreferrer">
-          <div className="streaming-icon" key={name}>
+        <a href={info?.it?.link} target="_blank" rel="noreferrer" key={name}>
+          <div className="streaming-icon">
             <img src={prime} alt={name} />
           </div>
           <p>Prime Video</p>
@@ -26,8 +26,8 @@ export const generateStreamingIcon = (name, info) => {
       );
     case "disney":
       return (
-        <a href={info?.it?.link} target="_blank" rel="noreferrer">
-          <div className="streaming-icon" key={name}>
+        <a href={info?.it?.link} target="_blank" rel="noreferrer" key={name}>
+          <div className="streaming-icon">
             <img src={disney} alt={name} />
           </div>
           <p>Disney+</p>
@@ -35,8 +35,8 @@ export const generateStreamingIcon = (name, info) => {
       );
     case "now":
       return (
-        <a href={info?.it?.link} target="_blank" rel="noreferrer">
-          <div className="streaming-icon" key={name}>
+        <a href={info?.it?.link} target="_blank" rel="noreferrer" key={name}>
+          <div className="streaming-icon">
             <img src={now} alt={name} />
           </div>
           <p>Now TV</p>
@@ -44,8 +44,8 @@ export const generateStreamingIcon = (name, info) => {
       );
     case "apple":
       return (
-        <a href={info?.it?.link} target="_blank" rel="noreferrer">
-          <div className="streaming-icon" key={name}>
+        <a href={info?.it?.link} target="_blank" rel="noreferrer" key={name}>
+          <div className="streaming-icon">
             <img src={apple} alt={name} />
           </div>
           <p>Apple TV</p>

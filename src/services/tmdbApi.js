@@ -9,7 +9,7 @@ export const tmdbApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getPopular: builder.query({
-      query: () => `/trending/all/week?api_key=${api_key}&language=it-IT`,
+      query: () => `/trending/all/day?api_key=${api_key}&language=it-IT`,
     }),
     getTopRatedMovies: builder.query({
       query: () =>

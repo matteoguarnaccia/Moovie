@@ -1,20 +1,9 @@
-import React, { useState } from "react";
 import logo from "../images/film-reel.png";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
-  const [inputValue, setInputValue] = useState("");
-  const navigate = useNavigate();
-  const inputHandler = (e) => {
-    setInputValue(e.target.value);
-  };
-  const submitSearch = (e) => {
-    const value = inputValue;
-    e.preventDefault();
-    setInputValue("");
-    navigate(`/search/${value}`);
-  };
   return (
     <StyledNavbar>
       <Link to="/">
@@ -33,14 +22,7 @@ const Navbar = () => {
           <li>Watchlist</li>
         </ul>
       </nav>
-      <form onSubmit={submitSearch}>
-        <input
-          type="text"
-          placeholder="Cerca Film, Serie Tv o Persone..."
-          value={inputValue}
-          onChange={inputHandler}
-        />
-      </form>
+      <SearchBar />
     </StyledNavbar>
   );
 };
@@ -93,25 +75,6 @@ const StyledNavbar = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-  form {
-    width: 30%;
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    input {
-      border-radius: 15px;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      background: none;
-      padding: 0.5rem;
-      width: 100%;
-      color: white;
-      letter-spacing: 0.1rem;
-      :focus {
-        outline: none;
-        border: 2px solid #d660fe;
-      }
-    }
-  }
   @media (max-width: 1000px) {
     flex-direction: column;
     background: linear-gradient(to top, rgba(0, 0, 0, 0), #0a0818 12%);
@@ -131,10 +94,6 @@ const StyledNavbar = styled.div`
     nav {
       font-size: 0.8rem;
       margin-bottom: 1rem;
-    }
-    form {
-      width: 80%;
-      margin: auto;
     }
   }
 `;
