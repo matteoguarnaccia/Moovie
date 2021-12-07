@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import SwiperCore, { FreeMode } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react/swiper-react.js";
+import "swiper/swiper.min.css";
 
 import {
   useGetPopularQuery,
@@ -17,48 +20,68 @@ const Homepage = () => {
   console.log(topRatedData);
 
   if (popularIsFetching || topRatedIsFetching) return "Loading...";
-
+  SwiperCore.use([FreeMode]);
   return (
     <MovieList>
       <div>
         <div className="popular">
           <h2>Film e Serie Tv del momento</h2>
-          <Results>
+          <Swiper
+            grabCursor={true}
+            slidesPerView={"auto"}
+            spaceBetween={10}
+            freeMode={true}
+          >
             {popularData?.results?.map((item) => (
-              <MovieCard
-                title={item.title || item.name}
-                poster={item.poster_path}
-                release={item.release_date || item.first_air_date}
-                rating={item.vote_average}
-                id={item.id}
-                type={item.title ? "movie" : "tv"}
-                key={item.id}
-              />
+              <SwiperSlide key={item.id}>
+                <MovieCard
+                  title={item.title || item.name}
+                  poster={item.poster_path}
+                  release={item.release_date || item.first_air_date}
+                  rating={item.vote_average}
+                  id={item.id}
+                  type={item.title ? "movie" : "tv"}
+                />
+              </SwiperSlide>
             ))}
-          </Results>
+          </Swiper>
         </div>
         <div className="now-playing">
           <h2>I film più votati</h2>
-          <Results>
+          <Swiper
+            grabCursor={true}
+            slidesPerView={"auto"}
+            spaceBetween={10}
+            freeMode={true}
+          >
             {topRatedData?.results?.map((item) => (
-              <MovieCard
-                title={item.title}
-                poster={item.poster_path}
-                release={item.release_date}
-                rating={item.vote_average}
-                id={item.id}
-                type={item.title ? "movie" : "tv"}
-                key={item.id}
-              />
+              <SwiperSlide key={item.id}>
+                <MovieCard
+                  title={item.title}
+                  poster={item.poster_path}
+                  release={item.release_date}
+                  rating={item.vote_average}
+                  id={item.id}
+                  type={item.title ? "movie" : "tv"}
+                  key={item.id}
+                />
+              </SwiperSlide>
             ))}
-          </Results>
+          </Swiper>
         </div>
       </div>
     </MovieList>
   );
 };
 
-const MovieList = styled.div``;
+const MovieList = styled.div`
+  .swiper-wrapper {
+    margin: 1rem;
+    .swiper-slide {
+      width: auto;
+    }
+  }
+`;
 
 const Results = styled.div`
   position: relative;

@@ -20,15 +20,15 @@ const MovieCard = ({ title, poster, release, rating, id, type }) => {
 
 const StyledMovieCard = styled.div`
   cursor: pointer;
-  margin-right: 1rem;
-  min-width: 200px;
-  max-width: 200px;
+  width: 200px;
   .poster-container {
     width: 100%;
     border-radius: 15px;
     overflow: hidden;
     img {
       width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
   .movie-info {
@@ -44,8 +44,7 @@ const StyledMovieCard = styled.div`
     }
   }
   @media (max-width: 1200px) {
-    min-width: 150px;
-    max-width: 200px;
+    width: 150px;
   }
 `;
 
