@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import default_poster from "../images/poster_default.jpg";
 
 const MovieCard = ({ title, poster, release, rating, id, type }) => {
   const poster_path = `https://image.tmdb.org/t/p/w200${poster}`;
@@ -7,7 +8,7 @@ const MovieCard = ({ title, poster, release, rating, id, type }) => {
     <StyledMovieCard>
       <Link to={`/${type}/${id}`}>
         <div className="poster-container">
-          <img src={poster_path} alt={title} />
+          <img src={poster ? poster_path : default_poster} alt={title} />
         </div>
         <div className="movie-info">
           <h3>{title}</h3>
@@ -27,8 +28,6 @@ const StyledMovieCard = styled.div`
     overflow: hidden;
     img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
   }
   .movie-info {
