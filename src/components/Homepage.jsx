@@ -80,6 +80,9 @@ const Homepage = () => {
 };
 const StyledHomePage = styled.div`
   margin-top: -10%;
+  .popular {
+    margin-top: 1rem;
+  }
 `;
 
 const MovieList = styled.div`

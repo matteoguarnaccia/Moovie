@@ -1,8 +1,12 @@
 import { useLocation } from "react-router";
 import styled from "styled-components";
-import { useGetDetailsQuery, useGetCastQuery } from "../services/tmdbApi";
+import {
+  useGetDetailsQuery,
+  useGetCastQuery,
+  useGetProvidersQuery,
+} from "../services/tmdbApi";
 import { useGetAvailabilityQuery } from "../services/streamingApi";
-import { generateStreamingIcon } from "../util";
+import { generateStreamingIcon, streamingFormatter } from "../util";
 import avatar from "../images/avatar_default.png";
 
 const MovieDetails = () => {
@@ -15,27 +19,41 @@ const MovieDetails = () => {
     isError,
   } = useGetAvailabilityQuery(id.substring(1));
   // useGetAvailabilityQuery(id.substring(1)) || "ciao";
+  const { data: providersData, isFetching: providersIsFetching } =
+    useGetProvidersQuery(id);
+
   const genres = [];
 
   //console.log(data);
-  if (isFetching || castIsFetching || streamingIsFetching) return "Loading...";
+  if (
+    isFetching ||
+    castIsFetching ||
+    streamingIsFetching ||
+    providersIsFetching
+  )
+    return "Loading...";
   for (let i in data.genres) {
     genres.push(data.genres[i].name);
   }
+  const providers = streamingFormatter(
+    providersData?.results?.IT?.flatrate,
+    streamingData?.streamingInfo
+  );
+  console.log(providers);
   return (
     <>
       <Poster
         src={`https://image.tmdb.org/t/p/original/${data.backdrop_path}`}
       />
       <DetailCard>
-        {!isError && Object.keys(streamingData?.streamingInfo).length !== 0 && (
+        {providers && providers.length !== 0 && (
           <Streaming>
             <div className="streaming-header">
               <h3>Servizi di Streaming</h3>
             </div>
             <div className="streaming-icons">
-              {Object.entries(streamingData?.streamingInfo)?.map(
-                ([name, info]) => generateStreamingIcon(name, info)
+              {providers?.map(({ name, link }) =>
+                generateStreamingIcon(name, link)
               )}
             </div>
           </Streaming>

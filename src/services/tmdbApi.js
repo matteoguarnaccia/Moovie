@@ -26,6 +26,9 @@ export const tmdbApi = createApi({
       query: (type_id) =>
         `${type_id}/credits?api_key=${api_key}&language=it-IT`,
     }),
+    getProviders: builder.query({
+      query: (type_id) => `${type_id}/watch/providers?api_key=${api_key}`,
+    }),
   }),
 });
 
@@ -35,4 +38,5 @@ export const {
   useGetDetailsQuery,
   useGetSearchQuery,
   useGetCastQuery,
+  useGetProvidersQuery,
 } = tmdbApi;
