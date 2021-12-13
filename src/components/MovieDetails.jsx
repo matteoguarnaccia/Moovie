@@ -13,12 +13,8 @@ const MovieDetails = () => {
   const id = useLocation().pathname;
   const { data, isFetching } = useGetDetailsQuery(id);
   const { data: castData, isFetching: castIsFetching } = useGetCastQuery(id);
-  const {
-    data: streamingData,
-    isFetching: streamingIsFetching,
-    isError,
-  } = useGetAvailabilityQuery(id.substring(1));
-  // useGetAvailabilityQuery(id.substring(1)) || "ciao";
+  const { data: streamingData, isFetching: streamingIsFetching } =
+    useGetAvailabilityQuery(id.substring(1));
   const { data: providersData, isFetching: providersIsFetching } =
     useGetProvidersQuery(id);
 

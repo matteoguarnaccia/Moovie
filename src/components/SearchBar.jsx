@@ -26,7 +26,6 @@ const SearchBar = () => {
       setIsActive(false);
     }
   };
-  if (!isFetching) console.log(data?.results);
   useEffect(() => {
     if (isActive) {
       window.addEventListener("click", exitHandler);
@@ -120,6 +119,7 @@ const SearchPreview = styled.div`
     padding: 0.5rem 0.5rem;
     border-radius: 15px;
     align-items: center;
+    overflow-x: hidden;
     :hover {
       background: linear-gradient(
         to right bottom,

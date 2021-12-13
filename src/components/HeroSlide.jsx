@@ -1,7 +1,10 @@
 import SwiperCore, { Autoplay, Lazy } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react/swiper-react.js";
 import "swiper/swiper.min.css";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import PendingOutlinedIcon from "@mui/icons-material/PendingOutlined";
+import PlayCircleOutlineOutlinedIcon from "@mui/icons-material/PlayCircleOutlineOutlined";
 
 const HeroSlide = ({ data }) => {
   SwiperCore.use([Autoplay, Lazy]);
@@ -27,20 +30,26 @@ const HeroSlide = ({ data }) => {
 
 const HeroSlideItem = ({ item, className }) => {
   const background = `https://image.tmdb.org/t/p/w1280/${item?.backdrop_path}`;
+  const navigate = useNavigate();
   return (
     <StyledHeroItem style={{ backgroundImage: `url(${background})` }}>
       <div className="hero-item-info">
         <div className="hero-item-header">
           <h3>{item.title || item.name}</h3>
         </div>
-        {/* <div className="hero-item-btns">
+        <div className="hero-item-btns">
           <div className="hero-btn">
+            <PlayCircleOutlineOutlinedIcon />
             <p>Trailer</p>
           </div>
-          <div className="hero-btn">
+          <div
+            className="hero-btn"
+            onClick={() => navigate(`/${item.media_type}/${item.id}`)}
+          >
+            <PendingOutlinedIcon />
             <p>Dettagli</p>
           </div>
-        </div> */}
+        </div>
         <div className="hero-item-overview">
           <p>{item.overview}</p>
         </div>
@@ -89,9 +98,11 @@ const StyledHeroItem = styled.div`
         }
       }
     }
-    /* .hero-item-btns {
+    .hero-item-btns {
       display: flex;
       .hero-btn {
+        cursor: pointer;
+        opacity: 0.8;
         display: flex;
         align-items: center;
         background: #1e1e20;
@@ -99,10 +110,14 @@ const StyledHeroItem = styled.div`
         margin: 0.5rem;
         border-radius: 15px;
         p {
-          opacity: 0.7;
+          margin-left: 0.5rem;
+          font-weight: 600;
+        }
+        :hover {
+          opacity: 1;
         }
       }
-    } */
+    }
     .hero-item-overview {
       padding: 2rem;
       height: auto;
@@ -125,6 +140,10 @@ const StyledHeroItem = styled.div`
     }
     @media (max-width: 480px) {
       width: 75%;
+      justify-content: space-evenly;
+      .hero-item-overview {
+        display: none;
+      }
     }
   }
 `;
